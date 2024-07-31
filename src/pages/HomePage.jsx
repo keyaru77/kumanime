@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Helmet } from 'react-helmet';
 import loadingGif from '../assets/styles/share-icon.gif';
 import { useSearchParams } from 'react-router-dom';
+import Pagination from '../components/Pagination';
 
 const HomePage = () => {
   const [updates, setUpdates] = useState([]);
@@ -36,14 +37,6 @@ const HomePage = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <img src={loadingGif} alt="Loading..." className="w-16 h-16" />
-      </div>
-    );
-  }
-
   return (
     <div className="container mx-auto p-4">
       <Helmet>
@@ -52,36 +45,26 @@ const HomePage = () => {
         <meta name="keywords" content="anime, manga, komik, Kumanime" />
       </Helmet>
       <h1 className="text-2xl font-bold mb-4">Latest Updates</h1>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {updates.map((update, index) => (
-          <div key={index} className="border p-2 rounded">
-            <a href={update.href} className="text-blue-500">
-              <img src={update.imgSrc} alt={update.title} className="w-full h-auto mb-2" />
-              <h2 className="text-lg font-bold">{update.title}</h2>
-            </a>
-            <p className="text-gray-500">{update.type}</p>
-            <a href={update.chapter.href} className="text-blue-500">{update.chapter.title}</a>
-            <p className="text-gray-500">{update.chapter.date}</p>
-          </div>
-        ))}
-      </div>
-      <div className="flex justify-center items-center mt-4">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-l"
-        >
-          Previous
-        </button>
-        <span className="mx-4">{currentPage} / {totalPages}</span>
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-r"
-        >
-          Next
-        </button>
-      </div>
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <img src={loadingGif} alt="Loading..." className="w-16 h-16" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {updates.map((update, index) => (
+            <div key={index} className="border p-2 rounded">
+              <a href={update.href} className="text-blue-500">
+                <img src={update.imgSrc} alt={update.title} className="w-full h-auto mb-2" />
+                <h2 className="text-lg font-bold">{update.title}</h2>
+              </a>
+              <p className="text-gray-500">{update.type}</p>
+              <a href={`/chapter${update.chapter.href}`} className="text-blue-500">{update.chapter.title}</a>
+              <p className="text-gray-500">{update.chapter.date}</p>
+            </div>
+          ))}
+        </div>
+      )}
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       <h2 className="text-2xl font-bold mt-8 mb-4">Popular Comics</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {popularComics.map((comic, index) => (
