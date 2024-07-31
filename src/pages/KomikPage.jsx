@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
-import loadingGif from '../assets/share-icon.gif';
+import loadingGif from '../assets/styles/share-icon.gif';
 
 const KomikPage = () => {
   const { id } = useParams();
