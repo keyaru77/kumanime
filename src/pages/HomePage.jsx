@@ -50,6 +50,20 @@ const HomePage = () => {
           <img src={loadingGif} alt="Loading..." className="w-16 h-16" />
         </div>
       ) : (
+      <h2 className="text-2xl font-bold mt-8 mb-4">Popular Comics</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {popularComics.map((comic, index) => (
+          <div key={index} className="border p-2 rounded">
+            <a href={comic.href} className="text-blue-500">
+              <img src={comic.imgSrc} alt={comic.title} className="w-full h-auto mb-2" />
+              <h2 className="text-lg font-bold">{comic.title}</h2>
+            </a>
+            <p className="text-gray-500">Rank: {comic.rank}</p>
+            <p className="text-gray-500">Views: {comic.loveViews}</p>
+          </div>
+        ))}
+      </div>
+    </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {updates.map((update, index) => (
             <div key={index} className="border p-2 rounded">
@@ -65,20 +79,7 @@ const HomePage = () => {
         </div>
       )}
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-      <h2 className="text-2xl font-bold mt-8 mb-4">Popular Comics</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {popularComics.map((comic, index) => (
-          <div key={index} className="border p-2 rounded">
-            <a href={comic.href} className="text-blue-500">
-              <img src={comic.imgSrc} alt={comic.title} className="w-full h-auto mb-2" />
-              <h2 className="text-lg font-bold">{comic.title}</h2>
-            </a>
-            <p className="text-gray-500">Rank: {comic.rank}</p>
-            <p className="text-gray-500">Views: {comic.loveViews}</p>
-          </div>
-        ))}
-      </div>
-    </div>
+      
   );
 };
 
