@@ -54,7 +54,6 @@ const HomePage = () => {
           {updates.map((update, index) => (
             <div key={index} className="border p-2 rounded">
               <a href={update.href} className="text-blue-500">
-                <img src={update.imgSrc} alt={update.title} className="w-full h-auto mb-2" />
                 <h2 className="text-lg font-bold">{update.title}</h2>
               </a>
               <p className="text-gray-500">{update.type}</p>
