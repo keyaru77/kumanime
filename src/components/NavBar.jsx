@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 const NavBar = () => {
   return (
+    <span className="bg"></span>
+<div className="wrapper">
     <header>
       <div className="container">
         <div className="component">
@@ -106,6 +108,34 @@ const NavBar = () => {
         </div>
       </div>
     </header>
+      <div
+    className="st-placement standard_1 inTop"
+    id="standard_1"
+    style={{ direction: "ltr", all: "initial !important" }}
+  >
+    <style>
+      {`
+        #standard_1.st-placement .st-reset {
+          all: unset;
+          all: initial;
+          max-width: unset !important;
+          max-height: unset !important;
+          position: absolute;
+          z-index: 2147483647;
+        }
+        #standard_1.st-placement style {
+          display: none !important;
+        }
+        #standard_1.st-placement script {
+          display: none !important;
+        }
+        .st-adunit-intop {
+          z-index: 9999999999 !important;
+        }
+      `}
+    </style>
+    <div></div>
+  </div>
   );
 };
 
