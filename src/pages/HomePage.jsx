@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
+import loadingGif from '../assets/styles/share-icon.gif';
 
 const HomePage = () => {
   const [updates, setUpdates] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUpdates = async () => {
@@ -13,6 +15,8 @@ const HomePage = () => {
         setUpdates(response.data.updates);
       } catch (error) {
         console.error('Error fetching updates:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -31,24 +35,31 @@ const HomePage = () => {
         <meta property="og:url" content="https://yourwebsite.com" />
       </Helmet>
       <h1 className="text-2xl font-bold mb-4">Latest Updates</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {updates.map((update, index) => (
-          <div key={index} className="border p-4 rounded">
-            <img src={update.imgSrc} alt={update.title} className="w-full h-48 object-cover rounded mb-2" />
-            <h2 className="text-xl font-bold">{update.title}</h2>
-            <p className="text-gray-600">{update.type}</p>
-            <Link to={update.href} className="text-blue-500">Read More</Link>
-            <div className="mt-2">
-              <Link to={update.chapter.href} className="text-blue-500">
-                {update.chapter.title}
-              </Link>
-              <p className="text-gray-500">{update.chapter.date}</p>
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <img src={loadingGif} alt="Loading..." className="w-16 h-16" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {updates.map((update, index) => (
+            <div key={index} className="border p-4 rounded">
+              <img src={update.imgSrc} alt={update.title} className="w-full h-48 object-cover rounded mb-2" />
+              <h2 className="text-xl font-bold">{update.title}</h2>
+              <p className="text-gray-600">{update.type}</p>
+              <Link to={update.href} className="text-blue-500">Read More</Link>
+              <div className="mt-2">
+                <Link to={update.chapter.href} className="text-blue-500">
+                  {update.chapter.title}
+                </Link>
+                <p className="text-gray-500">{update.chapter.date}</p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
 export default HomePage;
+          
