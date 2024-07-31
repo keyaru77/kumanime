@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
-import loadingGif from '../assets/styles/share-icon.gif';
+import loadingGif from '../assets/loading.gif';
 import { useSearchParams } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 
@@ -44,8 +44,13 @@ const HomePage = () => {
         <meta name="description" content="Welcome to Kumanime. Read the latest manga updates and popular comics." />
         <meta name="keywords" content="anime, manga, komik, Kumanime" />
       </Helmet>
-      
-      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+      <h1 className="text-2xl font-bold mb-4">Latest Updates</h1>
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <img src={loadingGif} alt="Loading..." className="w-16 h-16" />
+        </div>
+      ) : (
+       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       <h2 className="text-2xl font-bold mt-8 mb-4">Popular Comics</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {popularComics.map((comic, index) => (
@@ -60,12 +65,6 @@ const HomePage = () => {
         ))}
       </div>
     </div>
-      <h1 className="text-2xl font-bold mb-4">Latest Updates</h1>
-      {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <img src={loadingGif} alt="Loading..." className="w-16 h-16" />
-        </div>
-      ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {updates.map((update, index) => (
             <div key={index} className="border p-2 rounded">
@@ -79,7 +78,7 @@ const HomePage = () => {
             </div>
           ))}
         </div>
-      )}
+      )} 
   );
 };
 
