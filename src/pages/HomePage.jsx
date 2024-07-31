@@ -50,54 +50,18 @@ const HomePage = () => {
           <img src={loadingGif} alt="Loading..." className="w-16 h-16" />
         </div>
       ) : (
-        <section>
-          <div className="head long-tabs">
-            <h2>Recently Updated</h2>
-          </div>
-          <div className="tab-content" data-name="all">
-            <div className="original card-lg">
-              {updates.map((update, index) => (
-                <div key={index} className="unit item-37558">
-                  <div className="inner">
-                    <a href={update.href} className="poster" data-tip="37558?/cachee7f">
-                      <div>
-                        <img src={update.imgSrc} alt={update.title} />
-                      </div>
-                    </a>
-                    <div className="info">
-                      <div>
-                        <span className="type">?{update.type}</span>
-                        <nav data-tabs=".item-37558 .content">
-                          <span className="tab active">Warna</span>
-                        </nav>
-                      </div>
-                      <a href={update.href}>{update.title}</a>
-                      <ul className="content" data-name="chap">
-                        <li>
-                          <a href={`/chapter${update.chapter.href}`}>
-                            <span>{update.chapter.title}</span>
-                            <span>{update.chapter.date}</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {updates.map((update, index) => (
+            <div key={index} className="border p-2 rounded">
+              <a href={update.href} className="text-blue-500">
+                <h2 className="text-lg font-bold">{update.title}</h2>
+              </a>
+              <p className="text-gray-500">{update.type}</p>
+              <a href={`/chapter${update.chapter.href}`} className="text-blue-500">{update.chapter.title}</a>
+              <p className="text-gray-500">{update.chapter.date}</p>
             </div>
-          </div>
-          <div className="tab-content ajax-content"></div>
-          <div className="s-pagi js bottom d-block d-lg-none">
-            <div className="btns">
-              <span className="nav btn prev disabled" data-original-title="Page 1">
-                <i className="fa-solid fa-angle-left"></i>
-              </span>
-              <span className="nav btn next" data-original-title="Page 2">
-                <i className="fa-solid fa-angle-right"></i>
-              </span>
-            </div>
-          </div>
-        </section>
+          ))}
+        </div>
       )}
       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
       <h2 className="text-2xl font-bold mt-8 mb-4">Popular Comics</h2>
