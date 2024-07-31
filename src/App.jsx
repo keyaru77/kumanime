@@ -5,7 +5,7 @@ import KomikPage from './pages/KomikPage';
 import UserPage from './pages/UserPage';
 import NavBar from './components/NavBar';
 import NavBottom from './components/NavBottom';
-import './App.css';  // Import your CSS file here
+import './assets/styles/main.css';  // Import your CSS file here
 
 const App = () => {
   return (
