@@ -73,7 +73,7 @@ const HomePage = () => {
               <h2 className="text-lg font-bold">{comic.title}</h2>
             </a>
             <p className="text-gray-500">Rank: {comic.rank}</p>
-            <p className="text-gray-500">Views: {comic.loveViews}</p>
+            <p className="text-gray-500">Rating: {comic.loveViews}</p>
           </div>
         ))}
       </div>
