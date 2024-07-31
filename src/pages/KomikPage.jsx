@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Helmet } from 'react-helmet';
+import { useParams } from 'react-router-dom';
 import loadingGif from '../assets/styles/share-icon.gif';
 
 const KomikPage = () => {
   const { id } = useParams();
-  const [manga, setManga] = useState(null);
+  const [comicData, setComicData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchManga = async () => {
+    const fetchComicData = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(`https://api.koranime.fun/manga/${id}`);
-        setManga(response.data);
+        setComicData(response.data);
       } catch (error) {
-        console.error('Error fetching manga:', error);
+        console.error('Error fetching comic data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchManga();
+    fetchComicData();
   }, [id]);
 
   if (loading) {
@@ -32,63 +33,70 @@ const KomikPage = () => {
     );
   }
 
-  if (!manga) {
-    return <div>Error loading manga data.</div>;
+  if (!comicData) {
+    return <div>Comic data not found.</div>;
   }
+
+  const { title, thumbnail, firstChapter, lastChapter, rating, info, genres, synopsis, relatedManga, chapters } = comicData;
 
   return (
     <div className="container mx-auto p-4">
       <Helmet>
-        <title>Kumanime - {manga.title.trim()}</title>
-        <meta name="description" content={`Read ${manga.title.trim()} on Kumanime.`} />
-        <meta name="keywords" content="anime, manga, komik, Kumanime" />
-        <meta property="og:title" content={`Kumanime - ${manga.title.trim()}`} />
-        <meta property="og:description" content={`Read ${manga.title.trim()} on Kumanime.`} />
-        <meta property="og:image" content={manga.thumbnail} />
-        <meta property="og:url" content={`https://yourwebsite.com/komik/${id}`} />
+        <title>{title} - Kumanime</title>
+        <meta name="description" content={synopsis} />
+        <meta name="keywords" content={genres.map(genre => genre.title).join(', ')} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={synopsis} />
+        <meta property="og:image" content={thumbnail} />
+        <meta property="og:url" content={`https://kumanime.com/komik/${id}`} />
       </Helmet>
-      <div className="flex">
-        <img src={manga.thumbnail} alt={manga.title.trim()} className="w-64 h-auto mr-4" />
-        <div>
-          <h1 className="text-2xl font-bold mb-2">{manga.title.trim()}</h1>
-          <p className="mb-2"><strong>Rating:</strong> {manga.rating}</p>
-          <div className="mb-2">
-            <strong>Genres:</strong>
-            {manga.genres.map((genre, index) => (
-              <span key={index} className="ml-2">
-                <a href={genre.href} className="text-blue-500">{genre.title}</a>
-              </span>
-            ))}
-          </div>
-          <div className="mb-2">
-            <strong>Info:</strong>
-            <div className="ml-2">
-              <p><span className="font-bold">Judul Alternatif:</span> {manga.info['Judul Alternatif']}</p>
-              <p><span className="font-bold">Status:</span> {manga.info['Status']}</p>
-              <p><span className="font-bold">Jenis Komik:</span> {manga.info['Jenis Komik']}</p>
-              <p><span className="font-bold">Author:</span> {manga.info['Author']}</p>
-              <p><span className="font-bold">Artis:</span> {manga.info['Artis']}</p>
-              <p><span className="font-bold">Rilis:</span> {manga.info['Rilis']}</p>
-              <p><span className="font-bold">Serialisasi:</span> {manga.info['Serialisasi']}</p>
-              <p><span className="font-bold">Jumlah Pembaca:</span> {manga.info['Jumlah Pembaca']}</p>
-            </div>
-          </div>
-          <p className="mb-4"><strong>Synopsis:</strong> {manga.synopsis.trim()}</p>
-          <div className="mb-4">
-            <a href={manga.firstChapter.link} className="text-blue-500 mr-4">{manga.firstChapter.text.trim()}</a>
-            <a href={manga.lastChapter.link} className="text-blue-500">{manga.lastChapter.text.trim()}</a>
-          </div>
-        </div>
+      <h1 className="text-2xl font-bold mb-4">{title}</h1>
+      <img src={thumbnail} alt={title} className="w-full h-auto mb-4" />
+      <div className="mb-4">
+        <strong>First Chapter:</strong> <a href={firstChapter.link} className="text-blue-500">{firstChapter.text}</a>
       </div>
-      <h2 className="text-xl font-bold mt-8 mb-4">Chapters</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {manga.chapters.map((chapter, index) => (
-          <div key={index} className="border p-4 rounded">
-            <a href={chapter.chapterLink} className="text-blue-500">
-              {chapter.chapter.trim()}
+      <div className="mb-4">
+        <strong>Last Chapter:</strong> <a href={lastChapter.link} className="text-blue-500">{lastChapter.text}</a>
+      </div>
+      <div className="mb-4">
+        <strong>Rating:</strong> {rating}
+      </div>
+      <div className="mb-4">
+        <p><strong>Judul Alternatif:</strong> {info['Judul Alternatif']}</p>
+        <p><strong>Status:</strong> {info['Status']}</p>
+        <p><strong>Jenis Komik:</strong> {info['Jenis Komik']}</p>
+        <p><strong>Author:</strong> {info['Author']}</p>
+        <p><strong>Artis:</strong> {info['Artis']}</p>
+        <p><strong>Rilis:</strong> {info['Rilis']}</p>
+        <p><strong>Serialisasi:</strong> {info['Serialisasi']}</p>
+        <p><strong>Jumlah Pembaca:</strong> {info['Jumlah Pembaca']}</p>
+      </div>
+      <div className="mb-4">
+        <strong>Genres:</strong> {genres.map(genre => (
+          <a key={genre.title} href={genre.href} className="text-blue-500 mr-2">{genre.title}</a>
+        ))}
+      </div>
+      <div className="mb-4">
+        <strong>Synopsis:</strong> <p>{synopsis}</p>
+      </div>
+      <h2 className="text-xl font-bold mb-4">Chapters</h2>
+      <ul>
+        {chapters.map((chapter, index) => (
+          <li key={index} className="mb-2">
+            <a href={chapter.chapterLink} className="text-blue-500">{chapter.chapter}</a> - {chapter.chapterDate} <a href={chapter.downloadLink} className="text-blue-500">Download</a>
+          </li>
+        ))}
+      </ul>
+      <h2 className="text-xl font-bold mt-8 mb-4">Related Manga</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {relatedManga.map((manga, index) => (
+          <div key={index} className="border p-2 rounded">
+            <a href={manga.href} className="text-blue-500">
+              <img src={manga.img} alt={manga.title} className="w-full h-auto mb-2" />
+              <h3 className="text-lg font-bold">{manga.title}</h3>
             </a>
-            <p className="text-gray-500">{chapter.chapterDate}</p>
-            <a href={chapter.downloadLink} className="text-blue-500">Download</a>
+            <p className="text-gray-500">{manga.infoAdditional}</p>
+            <p className="text-gray-500">{manga.excerpt}</p>
           </div>
         ))}
       </div>
