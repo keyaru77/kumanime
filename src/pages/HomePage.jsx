@@ -40,7 +40,7 @@ const HomePage = () => {
   return (
     <div className="container mx-auto p-4">
       <Helmet>
-        <title>Kumanime - Home</title>
+        <title>Cuynime - Home</title>
         <meta name="description" content="Welcome to Kumanime. Read the latest manga updates and popular comics." />
         <meta name="keywords" content="anime, manga, komik, Kumanime" />
       </Helmet>
